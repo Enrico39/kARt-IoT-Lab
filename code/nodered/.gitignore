@@ -1,0 +1,10 @@
+# Installazione locale di Node-RED (si ricrea con npm install)
+node_modules/
+.config.*.json
+.flows.json.backup
+flows_cred.json
+.flows_cred.json.backup
+lib/
+context/
+# Dati raccolti durante le prove
+dataset/

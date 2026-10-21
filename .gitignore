@@ -1,0 +1,34 @@
+# Credenziali e segreti locali
+.secrets/
+
+# Ambienti Python
+.venv/
+__pycache__/
+
+# macOS
+.DS_Store
+
+# Unity (progetto in code/kARt)
+code/kARt/[Ll]ibrary/
+code/kARt/[Tt]emp/
+code/kARt/[Oo]bj/
+code/kARt/[Bb]uild/
+code/kARt/[Bb]uilds/
+code/kARt/[Ll]ogs/
+code/kARt/[Uu]ser[Ss]ettings/
+code/kARt/*.csproj
+code/kARt/*.sln
+code/kARt/*.apk
+code/kARt/*.slnx
+code/kARt/.utmp/
+code/kARt/.vscode/
+
+# File icona della cartella (macOS)
+Icon?
+
+# Build Android
+*.apk
+*.aab
+
+# Materiale di riferimento di altri progetti (non nostro)
+riferimenti/

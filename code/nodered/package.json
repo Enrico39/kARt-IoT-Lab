@@ -1,0 +1,12 @@
+{
+  "name": "kart-nodered",
+  "description": "kARt — dashboard Node-RED (cartella userDir di Node-RED)",
+  "private": true,
+  "scripts": {
+    "start": "node-red --userDir . --flowFile flows.json"
+  },
+  "dependencies": {
+    "node-red": "^4.1.0",
+    "@flowfuse/node-red-dashboard": "^1.26.0"
+  }
+}

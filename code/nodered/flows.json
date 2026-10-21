@@ -1,0 +1,1068 @@
+[
+    {
+        "id": "tab0001kart",
+        "type": "tab",
+        "label": "kARt",
+        "disabled": false,
+        "info": "Monitoraggio del kart: MQTT dal broker sulla Raspberry Pi → dashboard, dataset CSV e configurazione remota."
+    },
+    {
+        "id": "tab0002kart",
+        "type": "tab",
+        "label": "Simulatore",
+        "disabled": false,
+        "info": "Genera dati finti per provare la dashboard senza kart. Attivare il flow solo per le prove."
+    },
+    {
+        "id": "base0003kart",
+        "type": "ui-base",
+        "name": "kARt",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "none",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "theme0004kart",
+        "type": "ui-theme",
+        "name": "kARt",
+        "colors": {
+            "surface": "#1b1d21",
+            "primary": "#f2c200",
+            "bgPage": "#121315",
+            "groupBg": "#1b1d21",
+            "groupOutline": "#2a2d33"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "14px",
+            "groupGap": "14px",
+            "groupBorderRadius": "6px",
+            "widgetGap": "10px"
+        }
+    },
+    {
+        "id": "page0005kart",
+        "type": "ui-page",
+        "name": "kARt · telemetria",
+        "ui": "base0003kart",
+        "path": "/kart",
+        "icon": "go-kart",
+        "layout": "grid",
+        "theme": "theme0004kart",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "grp0007kart",
+        "type": "ui-group",
+        "name": "Kart",
+        "page": "page0005kart",
+        "width": "4",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "grp0008kart",
+        "type": "ui-group",
+        "name": "Sensore posteriore",
+        "page": "page0005kart",
+        "width": "4",
+        "height": "1",
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "grp0009kart",
+        "type": "ui-group",
+        "name": "Raspberry Pi",
+        "page": "page0005kart",
+        "width": "4",
+        "height": "1",
+        "order": 3,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "grp0010kart",
+        "type": "ui-group",
+        "name": "Comandi e link",
+        "page": "page0005kart",
+        "width": "4",
+        "height": "1",
+        "order": 4,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "grp0011kart",
+        "type": "ui-group",
+        "name": "Distanza posteriore nel tempo",
+        "page": "page0005kart",
+        "width": "8",
+        "height": "1",
+        "order": 5,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "grp0012kart",
+        "type": "ui-group",
+        "name": "Eventi",
+        "page": "page0005kart",
+        "width": "8",
+        "height": "1",
+        "order": 6,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "grp0013kart",
+        "type": "ui-group",
+        "name": "Configurazione",
+        "page": "page0005kart",
+        "width": "4",
+        "height": "1",
+        "order": 7,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "grp0014kart",
+        "type": "ui-group",
+        "name": "Segnale Wi-Fi della Pi",
+        "page": "page0005kart",
+        "width": "12",
+        "height": "1",
+        "order": 8,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "mqtt0006kart",
+        "type": "mqtt-broker",
+        "name": "Broker sulla Pi",
+        "broker": "emety.local",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "30",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "tpl0015kart",
+        "type": "ui-template",
+        "z": "tab0001kart",
+        "group": "",
+        "page": "",
+        "ui": "base0003kart",
+        "name": "Stile kARt",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "head": "",
+        "format": ".kt { color: #d7dae0; font-variant-numeric: tabular-nums; font-size: 14px; }\n.kt-label { font-size: 12px; color: #8a9099; }\n.kt-big { font-size: 38px; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }\n.kt-unit { font-size: 15px; font-weight: 400; color: #8a9099; margin-left: 4px; }\n.kt-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: #6b717a;\n           border: 1px solid #2a2d33; border-radius: 3px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }\n.kt-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-top: 1px solid #25282d; }\n.kt-row:first-of-type { border-top: 0; }\n.kt-row > span:first-child { color: #8a9099; }\n.kt-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }\n.kt-ok { color: #6fbf8a; } .kt-warn { color: #e3a93b; } .kt-bad { color: #e3635a; } .kt-muted { color: #6b717a; }\n.kt-seg { display: flex; gap: 4px; margin: 12px 0 6px; }\n.kt-seg span { flex: 1; height: 10px; border-radius: 2px; background: #2a2d33; transition: background .2s; }\n.kt-bar { position: relative; height: 6px; background: #2a2d33; border-radius: 3px; margin: 6px 0 12px; }\n.kt-bar i { position: absolute; top: 0; bottom: 0; border-radius: 3px; transition: left .15s, width .15s; }\n.kt-bar b { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: #5a5f68; }\n.kt-ev { display: grid; grid-template-columns: 70px 1fr auto; gap: 10px; padding: 7px 0; border-top: 1px solid #25282d; align-items: baseline; }\n.kt-ev:first-of-type { border-top: 0; }\n.kt-ev time { color: #6b717a; }\n.kt-btn { background: none; border: 1px solid #2a2d33; color: #8a9099; border-radius: 4px; padding: 2px 8px; font-size: 12px; cursor: pointer; }\n.kt-btn.on { color: #f2c200; border-color: #f2c200; }",
+        "storeOutMessages": true,
+        "passthru": false,
+        "resendOnRefresh": true,
+        "templateScope": "site:style",
+        "className": "",
+        "x": 150,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cmt0016kart",
+        "type": "comment",
+        "z": "tab0001kart",
+        "name": "Ingresso: tutti i topic del kart dal broker sulla Pi",
+        "info": "arkart/kart/telemetry, arkart/kart/events, arkart/kart/status, arkart/quest/metrics, arkart/quest/status (project.md §3.5)",
+        "x": 220,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "mqi0017kart",
+        "type": "mqtt in",
+        "z": "tab0001kart",
+        "name": "arkart/#",
+        "topic": "arkart/#",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "mqtt0006kart",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 160,
+        "wires": [
+            [
+                "sw0019kart"
+            ]
+        ]
+    },
+    {
+        "id": "lin0018kart",
+        "type": "link in",
+        "z": "tab0001kart",
+        "name": "dal simulatore",
+        "links": [
+            "lout0049kart"
+        ],
+        "x": 135,
+        "y": 220,
+        "wires": [
+            [
+                "sw0019kart"
+            ]
+        ]
+    },
+    {
+        "id": "sw0019kart",
+        "type": "switch",
+        "z": "tab0001kart",
+        "name": "Smista per topic",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "arkart/kart/telemetry",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "arkart/kart/events",
+                "vt": "str"
+            },
+            {
+                "t": "regex",
+                "v": "^arkart/(kart|quest)/status$",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "eq",
+                "v": "arkart/quest/metrics",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 4,
+        "x": 360,
+        "y": 190,
+        "wires": [
+            [
+                "fn0020kart",
+                "fn0021kart",
+                "fn0032kart"
+            ],
+            [
+                "fn0022kart",
+                "fn0033kart"
+            ],
+            [
+                "fn0020kart"
+            ],
+            [
+                "fn0020kart"
+            ]
+        ]
+    },
+    {
+        "id": "fn0020kart",
+        "type": "function",
+        "z": "tab0001kart",
+        "name": "Stato kARt",
+        "func": "// Unisce telemetria, stato dei nodi e metriche del Quest in un unico oggetto per la dashboard\nconst s = flow.get('stato') || { kartOnline: false, questOnline: false };\nconst p = msg.payload;\nswitch (msg.topic) {\n    case 'arkart/kart/telemetry':\n        Object.assign(s, p);\n        s.lastTelemetry = Date.now();\n        s.kartOnline = true;\n        break;\n    case 'arkart/kart/status':\n        s.kartOnline = String(p) === 'online';\n        break;\n    case 'arkart/quest/status':\n        s.questOnline = String(p) === 'online';\n        break;\n    case 'arkart/quest/metrics':\n        s.quest = p;\n        s.questOnline = true;\n        break;\n}\nflow.set('stato', s);\nreturn { payload: Object.assign({}, s) };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 160,
+        "wires": [
+            [
+                "tpl0024kart",
+                "tpl0025kart",
+                "tpl0026kart",
+                "tpl0027kart"
+            ]
+        ]
+    },
+    {
+        "id": "fn0021kart",
+        "type": "function",
+        "z": "tab0001kart",
+        "name": "Valori per i grafici",
+        "func": "// Una serie per grafico: distanza posteriore (solo se c'è un ostacolo) e segnale Wi-Fi\nconst p = msg.payload;\nconst distanza = p.rear_distance_cm >= 0 ? { topic: 'Distanza (cm)', payload: p.rear_distance_cm } : null;\nconst wifi = typeof p.rssi_dbm === 'number' ? { topic: 'Wi-Fi (dBm)', payload: p.rssi_dbm } : null;\nreturn [distanza, wifi];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 260,
+        "wires": [
+            [
+                "cht0028kart"
+            ],
+            [
+                "cht0029kart"
+            ]
+        ]
+    },
+    {
+        "id": "fn0022kart",
+        "type": "function",
+        "z": "tab0001kart",
+        "name": "Registro eventi",
+        "func": "// Tiene gli ultimi 30 eventi e i contatori per tipo\nconst lista = flow.get('eventi') || [];\nconst contatori = flow.get('contatori') || {};\nconst e = msg.payload || {};\nconst titoli = { COLLISION_PREVENTED: 'Frenata automatica', FAILSAFE: 'Fail-safe' };\nlista.unshift({\n    ora: new Date(e.ts || Date.now()).toLocaleTimeString('it-IT'),\n    tipo: e.event,\n    titolo: titoli[e.event] || e.event,\n    dettaglio: e.distance_cm != null ? 'ostacolo a ' + e.distance_cm + ' cm' : 'comandi interrotti, motori fermi'\n});\nlista.length = Math.min(lista.length, 30);\ncontatori[e.event] = (contatori[e.event] || 0) + 1;\nflow.set('eventi', lista);\nflow.set('contatori', contatori);\nreturn { payload: { lista: lista, contatori: contatori, nuovo: e.event } };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 340,
+        "wires": [
+            [
+                "tpl0030kart"
+            ]
+        ]
+    },
+    {
+        "id": "cmt0023kart",
+        "type": "comment",
+        "z": "tab0001kart",
+        "name": "Dashboard: http://localhost:1880/dashboard",
+        "info": "",
+        "x": 940,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "tpl0024kart",
+        "type": "ui-template",
+        "z": "tab0001kart",
+        "group": "grp0007kart",
+        "page": "",
+        "ui": "",
+        "name": "Kart",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "head": "",
+        "format": "<template>\n  <div class=\"kt\">\n    <div class=\"kt-label\">Stato <span class=\"kt-code\">{{ stantio() ? '—' : (s.state || '—') }}</span></div>\n    <div class=\"kt-big\" :class=\"classe\">{{ titolo }}</div>\n    <div class=\"kt-label\" style=\"margin: 2px 0 12px\">{{ descrizione }}</div>\n    <div class=\"kt-row\"><span>Kart</span><span><i class=\"kt-dot\" :style=\"{ background: s.kartOnline ? '#6fbf8a' : '#e3635a' }\"></i>{{ s.kartOnline ? 'online' : 'offline' }}</span></div>\n    <div class=\"kt-row\"><span>Quest</span><span><i class=\"kt-dot\" :style=\"{ background: s.questOnline ? '#6fbf8a' : '#5a5f68' }\"></i>{{ s.questOnline ? 'online' : 'non collegato' }}</span></div>\n    <div class=\"kt-row\"><span>Ultimo dato</span><span :class=\"stantio() ? 'kt-bad' : ''\">{{ fa(s.lastTelemetry) }}</span></div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () { return { s: {}, ora: Date.now() } },\n  mounted () { this.timer = setInterval(() => { this.ora = Date.now() }, 1000) },\n  unmounted () { clearInterval(this.timer) },\n  watch: { msg: function () { if (this.msg && this.msg.payload) this.s = this.msg.payload } },\n  methods: {\n    fa (t) {\n      if (!t) return 'mai'\n      const sec = Math.round((this.ora - t) / 1000)\n      return sec < 2 ? 'adesso' : sec < 60 ? sec + ' s fa' : Math.floor(sec / 60) + ' min fa'\n    },\n    stantio () { return !this.s.lastTelemetry || this.ora - this.s.lastTelemetry > 5000 },\n    barra (v, max, colore) {\n      const f = Math.max(-1, Math.min(1, (v || 0) / max))\n      const left = f >= 0 ? 50 : 50 + f * 50\n      return { left: left + '%', width: Math.abs(f) * 50 + '%', background: colore }\n    }\n  },\n  computed: {\n    titolo () {\n      if (this.stantio()) return 'Nessun dato'\n      return { OK: 'Pronto', WARN: 'Ostacolo vicino', STOP: 'Frenata', FAILSAFE: 'In sicurezza',\n               BOOT: 'Avvio', DISCONNECTED: 'Arduino scollegato' }[this.s.state] || this.s.state\n    },\n    descrizione () {\n      if (this.stantio()) return 'la Pi non pubblica telemetria'\n      return { OK: 'comandi ricevuti, nessun ostacolo dietro',\n               WARN: 'retromarcia rallentata dal sensore',\n               STOP: 'retromarcia bloccata: ostacolo troppo vicino',\n               FAILSAFE: 'nessun comando dal pilota: motori fermi',\n               BOOT: 'firmware in avvio',\n               DISCONNECTED: 'la Pi non vede l\\'Arduino sulla USB' }[this.s.state] || ''\n    },\n    classe () {\n      if (this.stantio()) return 'kt-muted'\n      return { OK: 'kt-ok', WARN: 'kt-warn', STOP: 'kt-bad', FAILSAFE: 'kt-bad' }[this.s.state] || 'kt-muted'\n    }\n  }\n}\n</script>",
+        "storeOutMessages": true,
+        "passthru": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 920,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "tpl0025kart",
+        "type": "ui-template",
+        "z": "tab0001kart",
+        "group": "grp0008kart",
+        "page": "",
+        "ui": "",
+        "name": "Sensore posteriore",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "head": "",
+        "format": "<template>\n  <div class=\"kt\">\n    <div class=\"kt-label\">Distanza dall'ostacolo</div>\n    <div class=\"kt-big\" :class=\"classe\">\n      <template v-if=\"libero\">libero</template>\n      <template v-else>{{ s.rear_distance_cm }}<span class=\"kt-unit\">cm</span></template>\n    </div>\n    <div class=\"kt-seg\"><span v-for=\"(c, i) in colori\" :key=\"i\" :style=\"{ background: c }\"></span></div>\n    <div class=\"kt-label\">rallenta sotto 30 cm · frena sotto {{ s.stop_cm || 15 }} cm</div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () { return { s: {}, ora: Date.now() } },\n  mounted () { this.timer = setInterval(() => { this.ora = Date.now() }, 1000) },\n  unmounted () { clearInterval(this.timer) },\n  watch: { msg: function () { if (this.msg && this.msg.payload) this.s = this.msg.payload } },\n  methods: {\n    fa (t) {\n      if (!t) return 'mai'\n      const sec = Math.round((this.ora - t) / 1000)\n      return sec < 2 ? 'adesso' : sec < 60 ? sec + ' s fa' : Math.floor(sec / 60) + ' min fa'\n    },\n    stantio () { return !this.s.lastTelemetry || this.ora - this.s.lastTelemetry > 5000 },\n    barra (v, max, colore) {\n      const f = Math.max(-1, Math.min(1, (v || 0) / max))\n      const left = f >= 0 ? 50 : 50 + f * 50\n      return { left: left + '%', width: Math.abs(f) * 50 + '%', background: colore }\n    }\n  },\n  computed: {\n    libero () { return this.stantio() || this.s.rear_distance_cm == null || this.s.rear_distance_cm < 0 },\n    accesi () {\n      if (this.libero) return 0\n      const d = this.s.rear_distance_cm, portata = 60, stop = this.s.stop_cm || 15\n      if (d >= portata) return 0\n      return Math.max(1, Math.min(8, Math.ceil((portata - d) / (portata - stop) * 8)))\n    },\n    classe () {\n      if (this.libero) return 'kt-muted'\n      const d = this.s.rear_distance_cm\n      return d < (this.s.stop_cm || 15) ? 'kt-bad' : d < 30 ? 'kt-warn' : ''\n    },\n    colori () {\n      const lista = []\n      for (let i = 1; i <= 8; i++) {\n        lista.push(i > this.accesi ? '#2a2d33' : i <= 3 ? '#6fbf8a' : i <= 6 ? '#e3a93b' : '#e3635a')\n      }\n      return lista\n    }\n  }\n}\n</script>",
+        "storeOutMessages": true,
+        "passthru": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 950,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "tpl0026kart",
+        "type": "ui-template",
+        "z": "tab0001kart",
+        "group": "grp0009kart",
+        "page": "",
+        "ui": "",
+        "name": "Raspberry Pi",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "head": "",
+        "format": "<template>\n  <div class=\"kt\">\n    <div class=\"kt-row\"><span>Temperatura CPU</span><span :class=\"classeTemp\">{{ s.cpu_temp_c != null ? s.cpu_temp_c.toFixed(1) + ' °C' : '—' }}</span></div>\n    <div class=\"kt-row\"><span>Segnale Wi-Fi</span><span>{{ s.rssi_dbm != null ? s.rssi_dbm + ' dBm' : '—' }} <span class=\"kt-label\">{{ qualita }}</span></span></div>\n    <div class=\"kt-row\"><span>Acceso da</span><span>{{ uptime }}</span></div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () { return { s: {}, ora: Date.now() } },\n  mounted () { this.timer = setInterval(() => { this.ora = Date.now() }, 1000) },\n  unmounted () { clearInterval(this.timer) },\n  watch: { msg: function () { if (this.msg && this.msg.payload) this.s = this.msg.payload } },\n  methods: {\n    fa (t) {\n      if (!t) return 'mai'\n      const sec = Math.round((this.ora - t) / 1000)\n      return sec < 2 ? 'adesso' : sec < 60 ? sec + ' s fa' : Math.floor(sec / 60) + ' min fa'\n    },\n    stantio () { return !this.s.lastTelemetry || this.ora - this.s.lastTelemetry > 5000 },\n    barra (v, max, colore) {\n      const f = Math.max(-1, Math.min(1, (v || 0) / max))\n      const left = f >= 0 ? 50 : 50 + f * 50\n      return { left: left + '%', width: Math.abs(f) * 50 + '%', background: colore }\n    }\n  },\n  computed: {\n    classeTemp () { const t = this.s.cpu_temp_c; return t == null ? 'kt-muted' : t > 75 ? 'kt-bad' : t > 65 ? 'kt-warn' : '' },\n    qualita () {\n      const r = this.s.rssi_dbm\n      if (r == null) return ''\n      return r > -55 ? 'ottimo' : r > -67 ? 'buono' : r > -75 ? 'debole' : 'scarso'\n    },\n    uptime () {\n      const u = this.s.uptime_s\n      if (u == null) return '—'\n      const h = Math.floor(u / 3600), m = Math.floor(u % 3600 / 60), sec = u % 60\n      return h > 0 ? h + ' h ' + m + ' min' : m > 0 ? m + ' min ' + sec + ' s' : sec + ' s'\n    }\n  }\n}\n</script>",
+        "storeOutMessages": true,
+        "passthru": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 930,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "tpl0027kart",
+        "type": "ui-template",
+        "z": "tab0001kart",
+        "group": "grp0010kart",
+        "page": "",
+        "ui": "",
+        "name": "Comandi e link",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "head": "",
+        "format": "<template>\n  <div class=\"kt\">\n    <div class=\"kt-row\" style=\"border:0\"><span>Acceleratore</span><span>{{ perc(s.throttle) }}</span></div>\n    <div class=\"kt-bar\"><b></b><i :style=\"barra(s.throttle, 255, (s.throttle || 0) >= 0 ? '#6fbf8a' : '#e3a93b')\"></i></div>\n    <div class=\"kt-row\" style=\"border:0\"><span>Sterzo</span><span>{{ lato(s.steer, 255, '%') }}</span></div>\n    <div class=\"kt-bar\"><b></b><i :style=\"barra(s.steer, 255, '#7fa7d9')\"></i></div>\n    <div class=\"kt-row\" style=\"border:0\"><span>Camera</span><span>{{ lato(s.pan, 1, '°') }}</span></div>\n    <div class=\"kt-bar\"><b></b><i :style=\"barra(s.pan, 45, '#d7dae0')\"></i></div>\n    <div class=\"kt-row\"><span>RTT dal Quest</span><span>{{ q.rtt_ms != null ? Math.round(q.rtt_ms) + ' ms' : '—' }}</span></div>\n    <div class=\"kt-row\"><span>Video</span><span>{{ q.video_fps != null ? q.video_fps + ' fps' : '—' }}</span></div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () { return { s: {}, ora: Date.now() } },\n  mounted () { this.timer = setInterval(() => { this.ora = Date.now() }, 1000) },\n  unmounted () { clearInterval(this.timer) },\n  watch: { msg: function () { if (this.msg && this.msg.payload) this.s = this.msg.payload } },\n  methods: {\n    fa (t) {\n      if (!t) return 'mai'\n      const sec = Math.round((this.ora - t) / 1000)\n      return sec < 2 ? 'adesso' : sec < 60 ? sec + ' s fa' : Math.floor(sec / 60) + ' min fa'\n    },\n    stantio () { return !this.s.lastTelemetry || this.ora - this.s.lastTelemetry > 5000 },\n    barra (v, max, colore) {\n      const f = Math.max(-1, Math.min(1, (v || 0) / max))\n      const left = f >= 0 ? 50 : 50 + f * 50\n      return { left: left + '%', width: Math.abs(f) * 50 + '%', background: colore }\n    }\n  },\n  computed: {\n    q () { return this.s.quest || {} },\n    perc () { return (v) => (v == null ? '—' : Math.round(v / 2.55) + '%') },\n    lato () {\n      return (v, scala, unita) => {\n        if (v == null) return '—'\n        const x = Math.round(Math.abs(v) / (unita === '%' ? 2.55 : scala))\n        return v === 0 ? 'centro' : (v < 0 ? 'sx ' : 'dx ') + x + unita\n      }\n    }\n  }\n}\n</script>",
+        "storeOutMessages": true,
+        "passthru": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 940,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cht0028kart",
+        "type": "ui-chart",
+        "z": "tab0001kart",
+        "group": "grp0011kart",
+        "name": "Distanza posteriore",
+        "label": "",
+        "order": 1,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "0",
+        "ymax": "100",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "false",
+        "pointRadius": 4,
+        "showLegend": false,
+        "removeOlder": "2",
+        "removeOlderUnit": "60",
+        "removeOlderPoints": "",
+        "colors": [
+            "#f2c200",
+            "#FF7F0E",
+            "#2CA02C",
+            "#A347E1",
+            "#D62728",
+            "#FF9896",
+            "#9467BD",
+            "#C5B0D5",
+            "#0095FF"
+        ],
+        "textColor": [
+            "#8a9099"
+        ],
+        "textColorDefault": false,
+        "gridColor": [
+            "#25282d"
+        ],
+        "gridColorDefault": false,
+        "width": "0",
+        "height": "5",
+        "className": "",
+        "interpolation": "linear",
+        "x": 950,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cht0029kart",
+        "type": "ui-chart",
+        "z": "tab0001kart",
+        "group": "grp0014kart",
+        "name": "Segnale Wi-Fi",
+        "label": "",
+        "order": 1,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "-90",
+        "ymax": "-20",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "false",
+        "pointRadius": 4,
+        "showLegend": false,
+        "removeOlder": "10",
+        "removeOlderUnit": "60",
+        "removeOlderPoints": "",
+        "colors": [
+            "#7fa7d9",
+            "#FF7F0E",
+            "#2CA02C",
+            "#A347E1",
+            "#D62728",
+            "#FF9896",
+            "#9467BD",
+            "#C5B0D5",
+            "#0095FF"
+        ],
+        "textColor": [
+            "#8a9099"
+        ],
+        "textColorDefault": false,
+        "gridColor": [
+            "#25282d"
+        ],
+        "gridColorDefault": false,
+        "width": "0",
+        "height": "3",
+        "className": "",
+        "interpolation": "linear",
+        "x": 930,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "tpl0030kart",
+        "type": "ui-template",
+        "z": "tab0001kart",
+        "group": "grp0012kart",
+        "page": "",
+        "ui": "",
+        "name": "Eventi",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "head": "",
+        "format": "<template>\n  <div class=\"kt\">\n    <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:6px\">\n      <span class=\"kt-label\">{{ conteggio }}</span>\n      <button class=\"kt-btn\" :class=\"{ on: suono }\" @click=\"attivaSuono\">{{ suono ? 'suono attivo' : 'attiva suono' }}</button>\n    </div>\n    <div v-if=\"!lista.length\" class=\"kt-label\" style=\"padding: 18px 0\">Ancora nessun evento.</div>\n    <div v-for=\"(e, i) in lista.slice(0, 8)\" :key=\"i\" class=\"kt-ev\">\n      <time>{{ e.ora }}</time>\n      <span><span :class=\"e.tipo === 'FAILSAFE' ? 'kt-bad' : 'kt-warn'\">{{ e.titolo }}</span> <span class=\"kt-label\">· {{ e.dettaglio }}</span></span>\n      <span class=\"kt-code\">{{ e.tipo }}</span>\n    </div>\n  </div>\n</template>\n<script>\nexport default {\n  data () { return { lista: [], contatori: {}, suono: false } },\n  watch: {\n    msg: function () {\n      const p = this.msg && this.msg.payload\n      if (!p) return\n      this.lista = p.lista || []\n      this.contatori = p.contatori || {}\n      if (p.nuovo && this.suono) this.bip(p.nuovo === 'FAILSAFE' ? 330 : 660)\n    }\n  },\n  computed: {\n    conteggio () {\n      const f = this.contatori.FAILSAFE || 0, c = this.contatori.COLLISION_PREVENTED || 0\n      return c + ' frenate automatiche · ' + f + ' fail-safe'\n    }\n  },\n  methods: {\n    attivaSuono () {\n      this.suono = !this.suono\n      if (this.suono) { this.audio = this.audio || new (window.AudioContext || window.webkitAudioContext)(); this.bip(520) }\n    },\n    bip (freq) {\n      if (!this.audio) return\n      const o = this.audio.createOscillator(), g = this.audio.createGain()\n      o.frequency.value = freq\n      g.gain.setValueAtTime(0.15, this.audio.currentTime)\n      g.gain.exponentialRampToValueAtTime(0.001, this.audio.currentTime + 0.25)\n      o.connect(g); g.connect(this.audio.destination)\n      o.start(); o.stop(this.audio.currentTime + 0.25)\n    }\n  }\n}\n</script>",
+        "storeOutMessages": true,
+        "passthru": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 910,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cmt0031kart",
+        "type": "comment",
+        "z": "tab0001kart",
+        "name": "Dataset CSV per l'analisi (cartella dataset/)",
+        "info": "",
+        "x": 230,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "fn0032kart",
+        "type": "function",
+        "z": "tab0001kart",
+        "name": "Riga telemetria",
+        "func": "const p = msg.payload;\nmsg.payload = {\n    ora: new Date().toISOString(), stato: p.state, distanza_cm: p.rear_distance_cm,\n    throttle: p.throttle, steer: p.steer, pan: p.pan, rssi_dbm: p.rssi_dbm, cpu_temp_c: p.cpu_temp_c\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 500,
+        "wires": [
+            [
+                "csv0034kart"
+            ]
+        ]
+    },
+    {
+        "id": "fn0033kart",
+        "type": "function",
+        "z": "tab0001kart",
+        "name": "Riga evento",
+        "func": "const e = msg.payload || {};\nmsg.payload = { ora: new Date(e.ts || Date.now()).toISOString(), evento: e.event, distanza_cm: e.distance_cm != null ? e.distance_cm : '' };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 560,
+        "wires": [
+            [
+                "csv0036kart"
+            ]
+        ]
+    },
+    {
+        "id": "csv0034kart",
+        "type": "csv",
+        "z": "tab0001kart",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "once",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "ora,stato,distanza_cm,throttle,steer,pan,rssi_dbm,cpu_temp_c",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 590,
+        "y": 500,
+        "wires": [
+            [
+                "fil0035kart"
+            ]
+        ]
+    },
+    {
+        "id": "fil0035kart",
+        "type": "file",
+        "z": "tab0001kart",
+        "name": "dataset/telemetria.csv",
+        "filename": "dataset/telemetria.csv",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "utf8",
+        "x": 820,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "csv0036kart",
+        "type": "csv",
+        "z": "tab0001kart",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "once",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "ora,evento,distanza_cm",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 590,
+        "y": 560,
+        "wires": [
+            [
+                "fil0037kart"
+            ]
+        ]
+    },
+    {
+        "id": "fil0037kart",
+        "type": "file",
+        "z": "tab0001kart",
+        "name": "dataset/eventi.csv",
+        "filename": "dataset/eventi.csv",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "utf8",
+        "x": 820,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cmt0038kart",
+        "type": "comment",
+        "z": "tab0001kart",
+        "name": "Configurazione remota → arkart/config → Pi → Arduino",
+        "info": "",
+        "x": 260,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "inj0039kart",
+        "type": "inject",
+        "z": "tab0001kart",
+        "name": "Valori iniziali",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 700,
+        "wires": [
+            [
+                "fn0040kart"
+            ]
+        ]
+    },
+    {
+        "id": "fn0040kart",
+        "type": "function",
+        "z": "tab0001kart",
+        "name": "100% · 15 cm",
+        "func": "return [{ payload: 100 }, { payload: 15 }];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 700,
+        "wires": [
+            [
+                "sld0041kart"
+            ],
+            [
+                "sld0042kart"
+            ]
+        ]
+    },
+    {
+        "id": "sld0041kart",
+        "type": "ui-slider",
+        "z": "tab0001kart",
+        "group": "grp0013kart",
+        "name": "Velocità max %",
+        "label": "Velocità max %",
+        "tooltip": "",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "passthru": false,
+        "outs": "end",
+        "topic": "velocita",
+        "topicType": "str",
+        "thumbLabel": "true",
+        "showTicks": "false",
+        "min": 20,
+        "max": 100,
+        "step": 5,
+        "className": "",
+        "iconPrepend": "",
+        "iconAppend": "",
+        "color": "",
+        "colorTrack": "",
+        "colorThumb": "",
+        "showTextField": false,
+        "x": 560,
+        "y": 680,
+        "wires": [
+            [
+                "fn0044kart"
+            ]
+        ]
+    },
+    {
+        "id": "sld0042kart",
+        "type": "ui-slider",
+        "z": "tab0001kart",
+        "group": "grp0013kart",
+        "name": "Frenata cm",
+        "label": "Frenata cm",
+        "tooltip": "",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "passthru": false,
+        "outs": "end",
+        "topic": "stop",
+        "topicType": "str",
+        "thumbLabel": "true",
+        "showTicks": "false",
+        "min": 5,
+        "max": 29,
+        "step": 1,
+        "className": "",
+        "iconPrepend": "",
+        "iconAppend": "",
+        "color": "",
+        "colorTrack": "",
+        "colorThumb": "",
+        "showTextField": false,
+        "x": 570,
+        "y": 720,
+        "wires": [
+            [
+                "fn0044kart"
+            ]
+        ]
+    },
+    {
+        "id": "tpl0043kart",
+        "type": "ui-template",
+        "z": "tab0001kart",
+        "group": "grp0013kart",
+        "page": "",
+        "ui": "",
+        "name": "Nota configurazione",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "head": "",
+        "format": "<template>\n  <div class=\"kt kt-label\" style=\"line-height:1.5\">\n    Velocità massima e distanza di frenata in retromarcia. Pubblicati su <span class=\"kt-code\">arkart/config</span>, la Pi li inoltra all'Arduino che li applica subito.\n  </div>\n</template>",
+        "storeOutMessages": true,
+        "passthru": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 570,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fn0044kart",
+        "type": "function",
+        "z": "tab0001kart",
+        "name": "Messaggio di configurazione",
+        "func": "const c = flow.get('config') || { velocita: 100, stop: 15 };\nif (msg.topic === 'velocita') c.velocita = msg.payload;\nif (msg.topic === 'stop') c.stop = msg.payload;\nflow.set('config', c);\nreturn { payload: { max_speed: Math.round(c.velocita * 2.55), stop_cm: c.stop } };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 700,
+        "wires": [
+            [
+                "mqo0045kart"
+            ]
+        ]
+    },
+    {
+        "id": "mqo0045kart",
+        "type": "mqtt out",
+        "z": "tab0001kart",
+        "name": "arkart/config",
+        "topic": "arkart/config",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt0006kart",
+        "x": 1060,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "cmt0046kart",
+        "type": "comment",
+        "z": "tab0002kart",
+        "name": "Kart simulato: attivare questo flow solo per provare la dashboard",
+        "info": "",
+        "x": 290,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "inj0047kart",
+        "type": "inject",
+        "z": "tab0002kart",
+        "name": "ogni 0,5 s",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "0.5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.5",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "fn0048kart"
+            ]
+        ]
+    },
+    {
+        "id": "fn0048kart",
+        "type": "function",
+        "z": "tab0002kart",
+        "name": "Kart simulato",
+        "func": "// Ciclo di 40 s: guida avanti, retromarcia verso un muro (WARN → STOP), pausa senza comandi (FAILSAFE)\nconst t = (Date.now() / 1000) % 40;\nconst out = [];\nif (!context.get('avviato')) {\n    context.set('avviato', true);\n    out.push({ topic: 'arkart/kart/status', payload: 'online' });\n    out.push({ topic: 'arkart/quest/status', payload: 'online' });\n}\nlet state = 'OK', throttle = 0, steer = 0, pan = 0, dist = -1;\nif (t < 14) { throttle = 150 + Math.round(60 * Math.sin(t)); steer = Math.round(120 * Math.sin(t / 2)); pan = Math.round(30 * Math.sin(t / 3)); }\nelse if (t < 26) { throttle = -140; dist = Math.max(9, Math.round(70 - (t - 14) * 6)); state = dist < 15 ? 'STOP' : dist < 30 ? 'WARN' : 'OK'; }\nelse if (t < 32) { state = 'FAILSAFE'; dist = 40; }\nconst prev = context.get('prev');\nif (state !== prev) {\n    if (state === 'STOP') out.push({ topic: 'arkart/kart/events', payload: { event: 'COLLISION_PREVENTED', distance_cm: dist, ts: Date.now() } });\n    if (state === 'FAILSAFE') out.push({ topic: 'arkart/kart/events', payload: { event: 'FAILSAFE', ts: Date.now() } });\n    context.set('prev', state);\n}\nout.push({ topic: 'arkart/kart/telemetry', payload: {\n    rear_distance_cm: dist, throttle: throttle, steer: steer, pan: pan, state: state,\n    rssi_dbm: -58 + Math.round(4 * Math.sin(t / 5)), cpu_temp_c: 47.3 + Math.round(10 * Math.sin(t / 20)) / 10,\n    uptime_s: Math.floor(Date.now() / 1000) % 100000 } });\nout.push({ topic: 'arkart/quest/metrics', payload: { rtt_ms: 38 + Math.round(20 * Math.random()), video_fps: 27 + Math.round(Math.random() * 2), lost_pkts: 3 } });\nnode.send([out]);\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 100,
+        "wires": [
+            [
+                "lout0049kart"
+            ]
+        ]
+    },
+    {
+        "id": "lout0049kart",
+        "type": "link out",
+        "z": "tab0002kart",
+        "name": "verso la dashboard",
+        "mode": "link",
+        "links": [
+            "lin0018kart"
+        ],
+        "x": 545,
+        "y": 100,
+        "wires": []
+    }
+]
