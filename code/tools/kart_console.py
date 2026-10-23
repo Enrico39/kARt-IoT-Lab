@@ -13,6 +13,7 @@ Tasti:
     a / d   sterzo sinistra / destra
     q / e   camera sinistra / destra
     c       camera al centro
+    j / l   solo ruota sinistra / solo ruota destra, avanti al massimo (prova dei motori)
     spazio  stop (throttle e sterzo a 0)
     f       simula la perdita del Wi-Fi (smette di inviare): prova del watchdog
     1 - 9   velocità massima (solo seriale): 1 = 25%, 9 = 100%
@@ -90,6 +91,15 @@ def limita(v, lo, hi):
     return max(lo, min(hi, v))
 
 
+def ruote(throttle, steer):
+    """Comando di ciascuna ruota dopo il mixing differenziale, come nel firmware."""
+    sx, dx = throttle + steer, throttle - steer
+    m = max(abs(sx), abs(dx))
+    if m > 255:
+        sx, dx = sx * 255 // m, dx * 255 // m
+    return sx, dx
+
+
 def main(scr, link):
     curses.curs_set(0)
     scr.nodelay(True)
@@ -119,6 +129,9 @@ def main(scr, link):
             elif k == "q": pan = limita(pan - PASSO_PAN, -PAN_MAX, PAN_MAX)
             elif k == "e": pan = limita(pan + PASSO_PAN, -PAN_MAX, PAN_MAX)
             elif k == "c": pan = 0
+            # throttle = ±steer: dopo il mixing gira una ruota sola (vedi ruote())
+            elif k == "j": throttle, steer = 128, 128
+            elif k == "l": throttle, steer = 128, -128
             elif k == " ": throttle = steer = 0
             elif k == "f": in_pausa = not in_pausa
             elif k in "123456789":
@@ -154,7 +167,8 @@ def main(scr, link):
 
         scr.erase()
         scr.addstr(0, 0, "kARt console  —  " + link.descrizione)
-        scr.addstr(2, 0, f"Throttle {throttle:5d}   Sterzo {steer:5d}   Camera {pan:4d}°")
+        sx, dx = ruote(throttle, steer)
+        scr.addstr(2, 0, f"Throttle {throttle:5d}   Sterzo {steer:5d}   Camera {pan:4d}°   Ruote: sx {sx:4d}  dx {dx:4d}")
         scr.addstr(3, 0, "INVIO IN PAUSA (Wi-Fi simulato perso): il kart deve andare in FAILSAFE" if in_pausa else f"Comandi inviati: {inviati}")
         scr.addstr(5, 0, f"Telemetria: {telemetria}   (ricevute {ricevuti})")
         parti = telemetria.split(",")
@@ -164,9 +178,10 @@ def main(scr, link):
             rtt_txt = f"{rtt_ms:.0f} ms" if rtt_ms is not None else "—"
             scr.addstr(6, 0, f"Dietro: {dist_txt:16s} Stato: {stato:9s} RTT: {rtt_txt}")
         scr.addstr(8, 0, "w/s acceleratore   a/d sterzo   q/e camera   c centro   spazio stop")
-        scr.addstr(9, 0, "f simula perdita Wi-Fi   1-9 velocità massima   x esci")
+        scr.addstr(9, 0, "j solo ruota sinistra   l solo ruota destra")
+        scr.addstr(10, 0, "f simula perdita Wi-Fi   1-9 velocità massima   x esci")
         if avviso:
-            scr.addstr(11, 0, avviso)
+            scr.addstr(12, 0, avviso)
         scr.refresh()
         time.sleep(0.005)
 
