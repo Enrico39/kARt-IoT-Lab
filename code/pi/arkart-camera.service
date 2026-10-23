@@ -1,0 +1,14 @@
+[Unit]
+Description=kARt streaming MJPEG della camera di bordo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=__UTENTE__
+ExecStart=/usr/bin/python3 __DIR__/arkart_camera.py
+Restart=always
+RestartSec=2
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

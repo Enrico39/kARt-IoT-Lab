@@ -22,7 +22,7 @@ La guida viaggia su **UDP** (30 Hz, bassa latenza); telemetria, eventi e configu
 │   ├── arduino/
 │   │   ├── arkart_firmware/    # firmware del kart
 │   │   └── test_*/             # sketch di prova di motori, sensore e servo
-│   ├── pi/                     # bridge Python, servizio systemd, broker MQTT, installazione automatica
+│   ├── pi/                     # bridge Python, streaming camera MJPEG, servizi systemd, broker MQTT, installazione automatica
 │   ├── kARt/                   # progetto Unity 6 per Meta Quest 3S
 │   ├── nodered/                # dashboard Node-RED (flows.json)
 │   └── tools/                  # console di guida da tastiera (prove senza visore)
@@ -37,11 +37,11 @@ La guida viaggia su **UDP** (30 Hz, bassa latenza); telemetria, eventi e configu
 
 ```bash
 ssh <utente>@<pi> 'mkdir -p ~/arkart'
-scp arkart_bridge.py arkart-bridge.service mosquitto-arkart.conf setup_pi.sh <utente>@<pi>:~/arkart/
+scp arkart_bridge.py arkart-bridge.service arkart_camera.py arkart-camera.service mosquitto-arkart.conf setup_pi.sh <utente>@<pi>:~/arkart/
 ssh -t <utente>@<pi> 'bash ~/arkart/setup_pi.sh'
 ```
 
-Lo script installa i pacchetti, il broker MQTT e il bridge come servizio avviato al boot.
+Lo script installa i pacchetti, il broker MQTT, il bridge e lo streaming della camera come servizi avviati al boot.
 
 **Prova senza visore** — dal computer, sulla stessa rete della Pi:
 
