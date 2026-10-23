@@ -1,6 +1,6 @@
 # kARt — FPV robotic kart in Mixed Reality
 
-Project for the **Lab of IoT** exam — University of Salerno, A.Y. 2026/2027 (Prof. Massimo Ficco).
+Project for the **Lab of IoT** exam — University of Salerno, A.Y. 2026/2027.
 
 A robotic kart driven in real time from a **Meta Quest 3S** in Mixed Reality. Thanks to passthrough the pilot keeps seeing the real room, with a first-person (FPV) video panel from the onboard camera and a telemetry HUD in front of them. Passthrough can be turned off to drive fully immersed in a virtual environment. The system follows the three-layer IoT architecture:
 

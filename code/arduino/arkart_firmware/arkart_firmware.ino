@@ -15,7 +15,7 @@
 #include <Servo.h>
 #include <avr/wdt.h>
 
-// --- Pin (cablaggio reale, vedi project.md §6.2) ---
+// --- Pin (cablaggio reale, vedi project.md §4.1) ---
 const uint8_t ENA = 6, IN1 = 11, IN2 = 10;   // motore A = destro
 const uint8_t ENB = 5, IN3 = 9,  IN4 = 8;    // motore B = sinistro
 const uint8_t TRIG = A0, ECHO = A1;          // HC-SR04 posteriore

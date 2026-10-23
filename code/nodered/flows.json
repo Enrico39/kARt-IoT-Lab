@@ -239,7 +239,7 @@
         "type": "comment",
         "z": "tab0001kart",
         "name": "Ingresso: tutti i topic del kart dal broker sulla Pi",
-        "info": "arkart/kart/telemetry, arkart/kart/events, arkart/kart/status, arkart/quest/metrics, arkart/quest/status (project.md §3.5)",
+        "info": "arkart/kart/telemetry, arkart/kart/events, arkart/kart/status, arkart/quest/metrics, arkart/quest/status (project.md §3.2)",
         "x": 220,
         "y": 100,
         "wires": []

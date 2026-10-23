@@ -10,7 +10,7 @@ using UnityEngine.UI;
 namespace ARKart
 {
     /// <summary>
-    /// Ricezione del video FPV, pipeline A di project.md §5.4: MJPEG su HTTP dalla Pi
+    /// Ricezione del video FPV, project.md §3.3: MJPEG su HTTP dalla Pi
     /// (arkart_camera.py, http://&lt;pi&gt;:8080/stream.mjpg).
     ///
     /// Un thread legge il flusso multipart e tiene solo l'ultimo JPEG arrivato; il main thread

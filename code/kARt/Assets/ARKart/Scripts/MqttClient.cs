@@ -9,7 +9,7 @@ namespace ARKart
     /// <summary>
     /// Client MQTT 3.1.1 minimo, senza dipendenze: CONNECT con Last Will, PUBLISH (QoS 0/1,
     /// retained), PINGREQ e DISCONNECT. Basta per pubblicare stato e metriche del Quest
-    /// (project.md §3.5) e funziona con IL2CPP senza problemi di stripping.
+    /// (project.md §3.2) e funziona con IL2CPP senza problemi di stripping.
     /// Non è thread-safe: va usato da un solo thread (quello di KartMqtt).
     /// </summary>
     public class MqttClient : IDisposable

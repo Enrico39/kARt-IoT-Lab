@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ARKart
 {
     /// <summary>
-    /// Il Quest come nodo IoT (project.md §3.5): pubblica sul broker della Pi
+    /// Il Quest come nodo IoT (project.md §3.2): pubblica sul broker della Pi
     ///   arkart/quest/status   "online" / "offline", retained, con Last Will "offline"
     ///   arkart/quest/metrics  {"rtt_ms":38,"video_fps":27,"lost_pkts":3,"battery":81} a 1 Hz
     /// così la dashboard Node-RED vede anche il visore.

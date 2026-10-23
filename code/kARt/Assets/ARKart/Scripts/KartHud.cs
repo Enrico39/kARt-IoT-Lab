@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace ARKart
 {
     /// <summary>
-    /// HUD del pilota (project.md §4.2). La gerarchia grafica la crea il menu
+    /// HUD del pilota (project.md §6.2). La gerarchia grafica la crea il menu
     /// "kARt/1. Crea interfaccia" (ARKartSetup); qui si aggiornano solo i valori.
     /// Fuori dal Play mostra valori di esempio, per vedere il design direttamente nella scena.
     /// </summary>

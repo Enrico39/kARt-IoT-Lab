@@ -16,7 +16,7 @@ namespace ARKart
     /// Invia C,&lt;seq&gt;,&lt;throttle&gt;,&lt;steer&gt;,&lt;pan&gt; a 30 Hz via UDP alla Pi e riceve
     /// la telemetria T,&lt;seq&gt;,&lt;dist_cm&gt;,&lt;stato&gt;, da cui calcola l'RTT.
     ///
-    /// Comandi (project.md §4.3):
+    /// Comandi (project.md §6.1):
     ///   grilletto destro = acceleratore, grilletto sinistro = retromarcia,
     ///   stick sinistro X = sterzo, stick destro X = camera, click stick destro = camera al centro,
     ///   B = stop di emergenza (premi di nuovo per sbloccare).

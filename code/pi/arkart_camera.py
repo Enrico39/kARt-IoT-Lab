@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""kARt — streaming della camera di bordo (pipeline A di project.md §5.4).
+"""kARt — streaming della camera di bordo (project.md §3.3).
 
     Camera IMX219 --picamera2 + MJPEGEncoder (HW)--> HTTP multipart :8080 --> Quest
 
