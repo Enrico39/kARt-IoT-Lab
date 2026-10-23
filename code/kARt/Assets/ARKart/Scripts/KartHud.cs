@@ -13,6 +13,8 @@ namespace ARKart
     public class KartHud : MonoBehaviour
     {
         public KartLink link;
+        public MjpegStream video;
+        public KartMqtt mqtt;
 
         [Tooltip("Fuori dal Play mostra valori di esempio")]
         public bool previewInEditor = true;
@@ -60,6 +62,8 @@ namespace ARKart
             public string state;
             public int throttle, steer, pan, rearCm, sent, received;
             public float rttMs;
+            public bool videoLive, mqttConnected;
+            public float videoFps;
         }
 
         static Values Preview => new Values
@@ -67,6 +71,7 @@ namespace ARKart
             connected = true, emergency = false, state = "WARN",
             throttle = -140, steer = 70, pan = -20, rearCm = 24,
             rttMs = 42f, sent = 1834, received = 1829,
+            videoLive = true, videoFps = 30f, mqttConnected = true,
         };
 
         void Update()
@@ -79,6 +84,8 @@ namespace ARKart
                 connected = link.Connected, emergency = link.EmergencyStop, state = link.KartState,
                 throttle = link.Throttle, steer = link.Steer, pan = link.Pan, rearCm = link.RearDistanceCm,
                 rttMs = link.RttMs, sent = link.PacketsSent, received = link.TelemetryReceived,
+                videoLive = video != null && video.Live, videoFps = video != null ? video.Fps : 0f,
+                mqttConnected = mqtt != null && mqtt.Connected,
             };
             Render(v, link != null ? link.maxPan : 45);
         }
@@ -138,12 +145,13 @@ namespace ARKart
             if (footerText)
             {
                 string rtt = v.rttMs >= 0 ? $"{v.rttMs:0} ms" : "—";
-                footerText.text = $"RTT  <color=#E8ECF2>{rtt}</color>     ·     Pacchetti  <color=#E8ECF2>{v.sent}</color> inviati / <color=#E8ECF2>{v.received}</color> ricevuti";
+                string mqttState = v.mqttConnected ? "<color=#34C77B>collegato</color>" : "<color=#EF4E4E>non collegato</color>";
+                footerText.text = $"RTT  <color=#E8ECF2>{rtt}</color>     ·     Pacchetti  <color=#E8ECF2>{v.sent}</color> inviati / <color=#E8ECF2>{v.received}</color> ricevuti     ·     MQTT  {mqttState}";
             }
 
-            // Pannello video (la camera arriverà più avanti)
-            if (videoStatus) videoStatus.text = "● OFFLINE";
-            if (videoStatusPill) videoStatusPill.color = new Color(1f, 1f, 1f, 0.12f);
+            // Pannello video
+            if (videoStatus) videoStatus.text = v.videoLive ? $"● LIVE  {v.videoFps:0} FPS" : "● OFFLINE";
+            if (videoStatusPill) videoStatusPill.color = v.videoLive ? new Color(Green.r, Green.g, Green.b, 0.35f) : new Color(1f, 1f, 1f, 0.12f);
         }
 
         static void SetBar(Image fill, float value, Color color)

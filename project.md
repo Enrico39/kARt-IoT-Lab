@@ -52,7 +52,7 @@ flowchart LR
             HUD["HUD Telemetria"]
             Stats["Pannello Statistiche"]
             Net["Client UDP"]
-            MqttQ["Client MQTT (MQTTnet)"]
+            MqttQ["Client MQTT (MqttClient.cs)"]
             Log["Logger CSV"]
         end
         subgraph NR ["Portatile"]
@@ -146,6 +146,8 @@ La Pi aggiunge alla riga ricevuta dall'Arduino i propri campi e la inoltra al Qu
 
 Ogni nodo pubblica i propri dati e si iscrive a quelli che gli servono. Grazie al **Last Will (LWT)**, se un nodo cade, il broker pubblica automaticamente `offline` al suo posto.
 
+**Lato Quest** (`KartMqtt.cs`): un thread dedicato si collega al broker della Pi, pubblica `online` retained (QoS 1) con Last Will `offline` e invia le metriche a 1 Hz; se il broker non risponde riprova ogni 2 s senza toccare la guida. Con il visore tolto (app in pausa) o all'uscita pubblica `offline`. Nelle metriche, `lost_pkts` conta i comandi non confermati da nessuna telemetria entro 500 ms: la telemetria a ~20 Hz riporta l'ultimo seq ricevuto, quindi conferma anche i comandi precedenti; `battery` è la carica del visore in %.
+
 ---
 
 ## 4. Application layer — Meta Quest 3S (Unity)
@@ -157,7 +159,7 @@ Ogni nodo pubblica i propri dati e si iscrive a quelli che gli servono. Grazie a
 * Player Settings: permesso `INTERNET` e *Allow downloads over HTTP = Always allowed* (lo stream video è HTTP in chiaro su LAN).
 
 ### 4.2 Esperienza MR
-* **Passthrough sempre attivo**: la stanza reale fa da riferimento visivo stabile e riduce molto la nausea rispetto a un FPV in VR completa.
+* **Passthrough attivo di default**: la stanza reale fa da riferimento visivo stabile e riduce molto la nausea rispetto a un FPV in VR completa. Con il **tasto X** si spegne: la stanza viene coperta da un ambiente virtuale (skybox e pavimento scuro con griglia da 1 m, all'altezza del pavimento reale) per guidare immersi nel solo video FPV. La scelta viene ricordata al riavvio dell'app (`KartPassthrough.cs`).
 * **Pannello FPV world-locked**: schermo virtuale circa 1.5 m davanti all'utente, leggermente curvo. Si può riposizionare afferrandolo, oppure con un tasto di "ricentra". Non segue la testa.
 * **HUD attorno al pannello**:
   * barra throttle/sterzo (input attuale del controller);
@@ -176,6 +178,7 @@ Schema da gioco di guida, con acceleratore e sterzo su dita diverse:
 | **Stick sinistro X** | Sterzo. Con throttle 0 il kart ruota su sé stesso |
 | **Stick destro X** | Pan della camera. **Click**: camera al centro |
 | **Tasto A / B / Y** | Ricentra pannello / stop di emergenza / mostra-nasconde pannello statistiche |
+| **Tasto X** | Passthrough acceso / spento (ambiente virtuale) |
 
 * Rilasciando i grilletti il kart si ferma: il pulsante "uomo morto" non serve.
 * I grilletti analogici del Touch Plus hanno una corsa lunga e danno un controllo della velocità più fine di uno stick.
@@ -186,7 +189,7 @@ Schema da gioco di guida, con acceleratore e sterzo su dita diverse:
 * Ricezione video: vedi §5.4 (due pipeline candidate da confrontare).
 
 ### 4.5 Pannello statistiche MR
-Pannello world-locked separato dal pannello FPV, posizionato di lato (circa 45°) così non disturba la guida. Si mostra e si nasconde con il tasto Y. I dati arrivano via **MQTT** (libreria C# **MQTTnet**), iscrivendosi a `arkart/#`.
+Pannello world-locked separato dal pannello FPV, posizionato di lato (circa 45°) così non disturba la guida. Si mostra e si nasconde con il tasto Y. I dati arrivano via **MQTT** (client C# del progetto, `MqttClient.cs`, vedi D9), iscrivendosi a `arkart/#`.
 
 * **Grafici live (ultimi 60 s)**: distanza posteriore, RTT, FPS video, RSSI Wi-Fi.
 * **Stato dei nodi**: Kart / Quest online-offline (dai messaggi retained/LWT), temperatura CPU della Pi, batteria del Quest.
@@ -394,7 +397,7 @@ Come nei progetti pubblicati sul sito del laboratorio, la consegna è composta d
 | **2 — Bridge e protocollo** | Daemon Python, firmware con watchdog e frenata in retromarcia, test con `nc` | Guida dal portatile via UDP |
 | **3 — Integrazione Quest** | Unity collegato al kart reale, comandi + telemetria | Guida dal visore |
 | **4 — Video** | Pipeline A, poi B, benchmark e scelta | FPV nel pannello MR |
-| **5 — IoT** | Mosquitto sulla Pi, MQTTnet in Unity, pannello statistiche, flow Node-RED | Monitoraggio live su Quest e dashboard |
+| **5 — IoT** | Mosquitto sulla Pi, client MQTT in Unity, pannello statistiche, flow Node-RED | Monitoraggio live su Quest e dashboard |
 | **6 — Misure e consegna** | Piano §9, slide, video demo, README, prova completa della demo | Deliverable §10 |
 
 **Stato al 19/10/2026:** fasi 1 (bring-up hardware) e 2 (bridge e protocollo) completate: guida da tastiera dal Mac via Wi-Fi attraverso la Pi, con fail-safe, frenata in retromarcia e telemetria MQTT funzionanti. Mancano la camera (in arrivo) e l'app Unity.
@@ -451,6 +454,7 @@ AR-KART/
 | D5 | **Autenticazione MQTT** | Aperta: se resta tempo (§5.3) |
 | D7 | **Reti Wi-Fi della Pi** | ✅ Solo la rete di casa (FRITZ!Box 7530). Nessun hotspot aggiuntivo per ora: per la demo d'esame la rete andrà rivalutata |
 | D8 | **Stack Unity** | ✅ Modello "Mixed Reality" di Unity 6 (OpenXR + Meta OpenXR + AR Foundation + XR Interaction Toolkit) al posto del Meta XR Core SDK: passthrough e interazioni pronti, meno configurazione manuale |
+| D9 | **Client MQTT in Unity** | ✅ Client MQTT 3.1.1 minimo scritto nel progetto (`MqttClient.cs`: CONNECT con LWT, PUBLISH QoS 0/1, PING) al posto di MQTTnet: nessuna DLL esterna e nessun problema di stripping con IL2CPP su Android |
 
 ### Progetti di riferimento del corso
 | Progetto | Elementi utili per kARt |

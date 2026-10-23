@@ -44,15 +44,32 @@ namespace ARKart.EditorTools
             Undo.RecordObject(hud, "Collega HUD");
             hud.link = link;
 
-            BuildVideoPanel(kart.transform, hud);
+            var stream = kart.GetComponent<MjpegStream>();
+            if (stream == null) stream = Undo.AddComponent<MjpegStream>(kart);
+            Undo.RecordObject(stream, "Collega video");
+            stream.link = link;
+            hud.video = stream;
+
+            var mqtt = kart.GetComponent<KartMqtt>();
+            if (mqtt == null) mqtt = Undo.AddComponent<KartMqtt>(kart);
+            Undo.RecordObject(mqtt, "Collega MQTT");
+            mqtt.link = link;
+            mqtt.video = stream;
+            hud.mqtt = mqtt;
+
+            BuildVideoPanel(kart.transform, hud, stream);
             BuildHud(kart.transform, hud);
+            var passthrough = BuildVirtualEnvironment(kart);
 
             EditorUtility.SetDirty(hud);
+            EditorUtility.SetDirty(stream);
+            EditorUtility.SetDirty(mqtt);
+            EditorUtility.SetDirty(passthrough);
             EditorSceneManager.MarkSceneDirty(kart.scene);
             Selection.activeGameObject = kart;
             EditorApplication.QueuePlayerLoopUpdate();
             SceneView.RepaintAll();
-            Debug.Log("[kARt] Interfaccia creata: pannello video FPV + HUD. Salva la scena (Cmd+S).");
+            Debug.Log("[kARt] Interfaccia creata: pannello video FPV + HUD, video, MQTT e ambiente virtuale collegati. Salva la scena (Cmd+S).");
         }
 
         // --- Palette (uguale a KartHud) ---
@@ -63,29 +80,108 @@ namespace ARKart.EditorTools
         static Sprite RoundedSprite => AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
         static Sprite CircleSprite => AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
 
-        static void BuildVideoPanel(Transform parent, KartHud hud)
+        static void BuildVideoPanel(Transform parent, KartHud hud, MjpegStream stream)
         {
             var canvas = WorldCanvas("Video FPV", parent, 1280, 720, new Vector3(0f, 1.5f, 2.2f), 0f, 0.001f);
 
             Img(Stretch("Cornice", canvas), KartHud.Hex(0x05070A, 0.92f), RoundedSprite, 0.3f);
 
-            // Qui arriverà l'immagine della camera (RawImage con la texture dello stream)
-            var videoRt = Stretch("Video", canvas, 14f);
-            var video = videoRt.gameObject.AddComponent<RawImage>();
+            // Immagine della camera: 4:3 dentro il pannello 16:9, senza deformarla
+            var area = Stretch("Area video", canvas, 14f);
+            Img(area, KartHud.Hex(0x11161D));
+            var video = Stretch("Video", area).gameObject.AddComponent<RawImage>();
             video.color = KartHud.Hex(0x11161D);
             video.raycastTarget = false;
+            var fitter = video.gameObject.AddComponent<AspectRatioFitter>();
+            fitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            fitter.aspectRatio = 4f / 3f;
+            stream.target = video;
+            stream.fitter = fitter;
 
-            Txt(Stretch("Segnaposto", canvas), "VIDEO FPV\n<size=30><color=#FFFFFF33>la camera della Pi apparirà qui</color></size>",
+            var placeholder = Txt(Stretch("Segnaposto", canvas), "VIDEO FPV\n<size=30><color=#FFFFFF33>in attesa dello stream della Pi…</color></size>",
                 72, new Color(1f, 1f, 1f, 0.22f), TextAlignmentOptions.Center, bold: true);
+            stream.placeholder = placeholder.gameObject;
 
             // Mirino al centro
             Img(Rect("Mirino H", canvas, 620, 359, 40, 2), new Color(1f, 1f, 1f, 0.18f));
             Img(Rect("Mirino V", canvas, 639, 340, 2, 40), new Color(1f, 1f, 1f, 0.18f));
 
             // Indicatore dello stream
-            var pill = Rect("Stato video", canvas, 30, 30, 180, 48);
+            var pill = Rect("Stato video", canvas, 30, 30, 240, 48);
             hud.videoStatusPill = Img(pill, new Color(1f, 1f, 1f, 0.12f), RoundedSprite, 0.42f);
             hud.videoStatus = Txt(Stretch("Testo", pill), "● OFFLINE", 22, KartHud.TextPrimary, TextAlignmentOptions.Center, bold: true, spacing: 4);
+        }
+
+        // --- Ambiente virtuale (passthrough spento) ---
+
+        const string MaterialsFolder = "Assets/ARKart/Materials";
+        const string SkyboxPath = "Assets/MRTemplateAssets/Materials/Skybox/Skybox01.mat";
+
+        static KartPassthrough BuildVirtualEnvironment(GameObject kart)
+        {
+            // GameObject.Find non vede gli oggetti disattivati: si cerca tra le radici della scena
+            foreach (var root in kart.scene.GetRootGameObjects())
+                if (root.name == "Ambiente virtuale") Undo.DestroyObjectImmediate(root);
+
+            var env = new GameObject("Ambiente virtuale");
+            Undo.RegisterCreatedObjectUndo(env, "Crea ambiente virtuale");
+
+            // Pavimento scuro con una griglia da 1 m: dà il senso del movimento e riduce la nausea
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            floor.name = "Pavimento";
+            floor.transform.SetParent(env.transform, false);
+            floor.transform.localScale = new Vector3(20f, 1f, 20f);          // 200 × 200 m
+            Object.DestroyImmediate(floor.GetComponent<Collider>());
+            floor.GetComponent<MeshRenderer>().sharedMaterial = FloorMaterial(200f);
+            env.SetActive(false);   // all'avvio decide KartPassthrough
+
+            var passthrough = kart.GetComponent<KartPassthrough>();
+            if (passthrough == null) passthrough = Undo.AddComponent<KartPassthrough>(kart);
+            Undo.RecordObject(passthrough, "Collega passthrough");
+            passthrough.virtualEnvironment = env;
+            passthrough.skybox = AssetDatabase.LoadAssetAtPath<Material>(SkyboxPath);
+            passthrough.xrCamera = Camera.main;
+            passthrough.cameraManager = Camera.main != null ? Camera.main.GetComponent<UnityEngine.XR.ARFoundation.ARCameraManager>() : null;
+            passthrough.xrOrigin = Object.FindFirstObjectByType<Unity.XR.CoreUtils.XROrigin>();
+            return passthrough;
+        }
+
+        static Material FloorMaterial(float tiles)
+        {
+            if (!AssetDatabase.IsValidFolder(MaterialsFolder)) AssetDatabase.CreateFolder("Assets/ARKart", "Materials");
+
+            string texPath = MaterialsFolder + "/Griglia.png";
+            if (AssetDatabase.LoadAssetAtPath<Texture2D>(texPath) == null)
+            {
+                const int size = 128, line = 2;
+                var tex = new Texture2D(size, size, TextureFormat.RGB24, true);
+                var bg = KartHud.Hex(0x15181C);
+                var fg = KartHud.Hex(0x2E333B);
+                for (int y = 0; y < size; y++)
+                    for (int x = 0; x < size; x++)
+                        tex.SetPixel(x, y, x < line || y < line ? fg : bg);
+                System.IO.File.WriteAllBytes(texPath, tex.EncodeToPNG());
+                Object.DestroyImmediate(tex);
+                AssetDatabase.ImportAsset(texPath);
+                var importer = (TextureImporter)AssetImporter.GetAtPath(texPath);
+                importer.wrapMode = TextureWrapMode.Repeat;
+                importer.anisoLevel = 8;     // la griglia resta nitida anche lontano
+                importer.SaveAndReimport();
+            }
+
+            string matPath = MaterialsFolder + "/Pavimento.mat";
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+            if (mat == null)
+            {
+                mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+                AssetDatabase.CreateAsset(mat, matPath);
+            }
+            mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(texPath));
+            mat.SetTextureScale("_BaseMap", new Vector2(tiles, tiles));
+            mat.SetColor("_BaseColor", Color.white);
+            EditorUtility.SetDirty(mat);
+            AssetDatabase.SaveAssets();
+            return mat;
         }
 
         static void BuildHud(Transform parent, KartHud hud)
@@ -224,7 +320,7 @@ namespace ARKart.EditorTools
         [MenuItem("kARt/2. Imposta il progetto per il Quest")]
         public static void ConfigureProject()
         {
-            // UDP verso la Pi e, più avanti, stream video HTTP in chiaro sulla rete locale
+            // UDP verso la Pi e stream video HTTP in chiaro sulla rete locale
             PlayerSettings.Android.forceInternetPermission = true;
             PlayerSettings.insecureHttpOption = InsecureHttpOption.AlwaysAllowed;
             PlayerSettings.productName = "kARt";
@@ -285,6 +381,40 @@ namespace ARKart.EditorTools
             string text = report.Length > 0 ? report.ToString() : "Niente da togliere: la scena era già pulita.";
             Debug.Log("[kARt] Pulizia scena:\n" + text);
             EditorUtility.DisplayDialog("kARt", text + "\nSalva la scena con Cmd+S. Per tornare indietro: Cmd+Z.", "OK");
+        }
+
+        // ================================================================ 4. Build
+
+        const string ApkPath = "Builds/kARt.apk";
+
+        [MenuItem("kARt/4. Build e installa sul Quest")]
+        public static void BuildAndRun() => Build(BuildOptions.AutoRunPlayer);
+
+        // Da riga di comando, con l'editor chiuso:
+        //   Unity -batchmode -quit -projectPath code/kARt -buildTarget Android -executeMethod ARKart.EditorTools.ARKartSetup.BatchBuild
+        // Ricrea l'interfaccia nella prima scena, la salva e produce Builds/kARt.apk.
+        public static void BatchBuild()
+        {
+            var scene = EditorSceneManager.OpenScene(EditorBuildSettings.scenes[0].path);
+            BuildInterface();
+            EditorSceneManager.SaveScene(scene);
+            bool ok = Build(BuildOptions.None);
+            EditorApplication.Exit(ok ? 0 : 1);
+        }
+
+        static bool Build(BuildOptions options)
+        {
+            var scenes = System.Array.FindAll(EditorBuildSettings.scenes, s => s.enabled);
+            var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
+            {
+                scenes = System.Array.ConvertAll(scenes, s => s.path),
+                locationPathName = ApkPath,
+                target = BuildTarget.Android,
+                options = options,
+            });
+            var summary = report.summary;
+            Debug.Log($"[kARt] Build {summary.result}: {ApkPath}, {summary.totalSize / 1e6:0.0} MB, {summary.totalErrors} errori, {summary.totalTime.TotalSeconds:0} s");
+            return summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded;
         }
     }
 }

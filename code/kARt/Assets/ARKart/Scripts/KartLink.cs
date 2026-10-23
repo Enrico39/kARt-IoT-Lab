@@ -20,6 +20,7 @@ namespace ARKart
     ///   grilletto destro = acceleratore, grilletto sinistro = retromarcia,
     ///   stick sinistro X = sterzo, stick destro X = camera, click stick destro = camera al centro,
     ///   B = stop di emergenza (premi di nuovo per sbloccare).
+    ///   X = passthrough acceso / spento (in KartPassthrough).
     /// Nell'editor funziona anche da tastiera: W/S, A/D, Q/E, C, spazio.
     /// </summary>
     public class KartLink : MonoBehaviour
@@ -48,6 +49,9 @@ namespace ARKart
         public bool EmergencyStop { get; private set; }
         public int PacketsSent { get; private set; }
         public int TelemetryReceived { get; private set; }
+        /// <summary>Comandi non confermati da nessuna telemetria entro 500 ms (la telemetria
+        /// a ~20 Hz riporta l'ultimo seq ricevuto, quindi conferma anche quelli precedenti).</summary>
+        public int LostPackets { get; private set; }
         public bool Connected => Clock() - lastTelemetryTime < 1.0;
 
         InputAction throttleAction, reverseAction, steerAction, panAction, panCenterAction, stopAction;
@@ -58,6 +62,8 @@ namespace ARKart
         volatile bool running;
         readonly ConcurrentQueue<(string line, double time)> rxQueue = new ConcurrentQueue<(string, double)>();
         readonly Dictionary<ushort, double> sentTimes = new Dictionary<ushort, double>();
+        readonly Queue<(ushort seq, double time)> unconfirmed = new Queue<(ushort, double)>();
+        const double LostAfterSec = 0.5;
 
         static readonly Stopwatch clock = Stopwatch.StartNew();
         static double Clock() => clock.Elapsed.TotalSeconds;   // usabile anche dal thread di ricezione
@@ -150,7 +156,7 @@ namespace ARKart
             }
         }
 
-        static IPAddress ResolveAddress(string host)
+        internal static IPAddress ResolveAddress(string host)
         {
             if (IPAddress.TryParse(host, out var ip)) return ip;
             foreach (var a in Dns.GetHostAddresses(host))
@@ -196,8 +202,22 @@ namespace ARKart
             seq++;
             Send($"C,{seq},{Throttle},{Steer},{Pan}");
             PacketsSent++;
-            sentTimes[seq] = Clock();
+            double now = Clock();
+            sentTimes[seq] = now;
             sentTimes.Remove((ushort)(seq - 300));
+            unconfirmed.Enqueue((seq, now));
+        }
+
+        // a <= b tenendo conto del giro a 65536
+        static bool SeqNotAfter(ushort a, ushort b) => (ushort)(b - a) < 32768;
+
+        void CountLostCommands(double now)
+        {
+            while (unconfirmed.Count > 0 && now - unconfirmed.Peek().time > LostAfterSec)
+            {
+                unconfirmed.Dequeue();
+                LostPackets++;
+            }
         }
 
         void SendStop()
@@ -221,6 +241,8 @@ namespace ARKart
                 TelemetryReceived++;
                 if (sentTimes.TryGetValue(echoSeq, out var sentAt))
                     RttMs = (float)((item.time - sentAt) * 1000.0);
+                while (unconfirmed.Count > 0 && SeqNotAfter(unconfirmed.Peek().seq, echoSeq))
+                    unconfirmed.Dequeue();
             }
         }
 
@@ -232,6 +254,7 @@ namespace ARKart
             ProcessTelemetry();
 
             double now = Clock();
+            CountLostCommands(now);
             if (now >= nextSendTime)
             {
                 // niente raffiche: se il frame è arrivato in ritardo si invia un solo comando
