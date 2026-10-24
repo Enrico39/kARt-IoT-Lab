@@ -9,3 +9,6 @@ lib/
 context/
 # Dati raccolti durante le prove
 dataset/
+
+# Log di Node-RED avviato da code/tools/kart_admin.py
+node-red.log

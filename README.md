@@ -20,11 +20,18 @@ Driving runs over **UDP** (30 Hz, low latency), the video over **HTTP** (MJPEG),
 
 📄 Full project document (in Italian): [project.md](project.md)
 
+## Demo
+
+[![kARt demo — click to watch the video](media/kart-image-1.png)](media/kart-demo.mp4)
+
+▶️ [Watch the demo video](media/kart-demo.mp4)
+
 ## Repository structure
 
 ```
 ├── project.md                  # project document (architecture, protocol, measurements, decisions)
-├── IoT Lab-...-kARt-EN.key     # presentation (Keynote)
+├── IoT Lab-...-kARt-EN.key     # presentation (Keynote, stored with Git LFS)
+├── media/                      # demo video and screenshots
 └── code/
     ├── arduino/
     │   ├── arkart_firmware/    # kart firmware
@@ -32,7 +39,7 @@ Driving runs over **UDP** (30 Hz, low latency), the video over **HTTP** (MJPEG),
     ├── pi/                     # Python bridge, MJPEG camera streaming, systemd services, MQTT broker, automatic setup
     ├── kARt/                   # Unity 6 project for Meta Quest 3S
     ├── nodered/                # Node-RED dashboard (flows.json)
-    └── tools/                  # keyboard driving console (tests without the headset)
+    └── tools/                  # keyboard driving console, Pi and Node-RED admin console
 ```
 
 ## Getting started
@@ -75,6 +82,12 @@ The dashboard is at `http://localhost:1880/dashboard/kart` and connects to the b
 cd code/tools
 python3 -m venv .venv && .venv/bin/pip install pyserial
 .venv/bin/python kart_console.py --udp <pi-address>
+```
+
+**Managing the Pi and Node-RED** — a small menu to check the Pi's services, read their logs, grab a camera snapshot, reboot or shut down the Pi, and start or stop Node-RED:
+
+```bash
+python3 code/tools/kart_admin.py --host <ssh-host>
 ```
 
 ## Author
