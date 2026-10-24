@@ -22,9 +22,10 @@ Driving runs over **UDP** (30 Hz, low latency), the video over **HTTP** (MJPEG),
 
 ## Demo
 
-[![kARt demo — click to watch the video](media/kart-image-1.png)](media/kart-demo.mp4)
+https://github.com/user-attachments/assets/9d085e7a-a722-4008-868a-55a31906355a
 
-▶️ [Watch the demo video](media/kart-demo.mp4)
+
+
 
 ## Repository structure
 
